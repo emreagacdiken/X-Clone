@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+//Prisma, veritabanı şeması üzerinden TypeScript türlerini otomatik olarak oluşturur. 
+//Bu, kodun yazılırken tip hatalarını önlemeye yardımcı olur.
+//Prisma Client de veritabanına erişimi kolaylaştırır. 
+//SQL yazmak yerine TypeScript kodu ile sorgular oluşturabildiğimizden dolayı kullandık.
+generator client {
+  provider = "prisma-client-js"
+}
+// MongoDB'nin belge tabanlı yapısı, esnek şema tanımlamasına izin verir.
+// Prisma, MongoDB için destek sağlar ve MongoDB veritabanı şemasını tanımlamak için Prisma şemasını kullanır.
+// MongoDB daha hızlı ve daha esnek bir veritabanı olduğundan dolayı kullandık.
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+// 4 farklı model oluşturduk
+// User modeli kullanıcı bilgilerini tutar.
+// Post modeli kullanıcıların paylaşımlarını tutar.
+// Comment modeli kullanıcıların paylaşımlarına yapılan yorumları tutar.
+// Notification modeli kullanıcıların bildirimlerini tutar.
+//
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  username String   @unique
+  bio      String?
+  email     String   @unique
+  emailVerified DateTime?
+  image    String?
+  coverImage String?
+  profileImage String?
+  hashedPassword String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  followingIds String[] @db.ObjectId 
+  hasNotification Boolean?
+
+  posts Post[]
+  comments Comment[]
+  notifications Notification[]
+}
+
+model Post{
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  body    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String @db.ObjectId
+  likedIds String[] @db.ObjectId
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) //onDelete: Cascade, ilişkili verileri siler.
+
+  comments Comment[]
+}
+
+model Comment{
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  body    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String @db.ObjectId
+  postId String @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade) 
+}
+
+model Notification{
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  body    String
+  userId String @db.ObjectId
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
