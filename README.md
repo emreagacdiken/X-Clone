@@ -1,3 +1,27 @@
+## 🐦 X-Clone
+
+X-Clone is a full-stack X (Twitter) clone built with Next.js, React, TypeScript, Tailwind CSS, Prisma, and NextAuth. It replicates core functionalities of Twitter, including user authentication, posting tweets, and viewing timelines.​
+
+## 🚀 Features
+
+🔐 User Authentication: Secure login and registration using NextAuth.
+📝 Tweet Posting: Create and share tweets in real-time.
+💬 Comments: Users can comment on tweets.
+❤️ Likes: Users can like and unlike tweets.
+🔁 Retweets: Support for retweeting other users' posts.
+📰 Timeline View: Dynamic home feed with all user posts.
+👤 User Profiles: View other users’ tweets and stats.
+🎨 Responsive Design: Fully mobile-friendly UI with Tailwind CSS.
+
+
+## 🛠️ Tech Stack
+
+Frontend: Next.js 14, React, TypeScript, Tailwind CSS
+Backend: Next.js API Routes, Prisma ORM
+Authentication: NextAuth
+Database: PostgreSQL (via Prisma)
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
